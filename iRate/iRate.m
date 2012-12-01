@@ -800,7 +800,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
 
 - (void)openRatingsPageInAppStore
 {
-    if (_displayAppUsingStorekitIfAvailable && [SKStoreProductViewController class])
+	if (_displayAppUsingStorekitIfAvailable && [NSClassFromString(@"SKStoreProductViewController") class])
     {
         if (self.verboseLogging)
         {
@@ -808,12 +808,12 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         }
         
         //create store view controller
-        SKStoreProductViewController *productController = [[SKStoreProductViewController alloc] init];
-        productController.delegate = (id<SKStoreProductViewControllerDelegate>)self;
+        UIViewController *productController = [[NSClassFromString(@"SKStoreProductViewController") alloc] init];
+        [(id)productController setDelegate:(id<SKStoreProductViewControllerDelegate>)self];
         
         //load product details
         NSDictionary *productParameters = @{SKStoreProductParameterITunesItemIdentifier: [@(_appStoreID) description]};
-        [productController loadProductWithParameters:productParameters completionBlock:NULL];
+        [(id)productController loadProductWithParameters:productParameters completionBlock:NULL];
         
         //get root view controller
         UIViewController *rootViewController = nil;
